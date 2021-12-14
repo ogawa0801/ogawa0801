@@ -17,9 +17,15 @@ jobs:
       - uses: actions/checkout@v2
       # - name: Run a one-line script
       #   run: echo Hello, world!
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
+      - name: Install Plugin for rbenv
+        run: |
+          rubyVersionBinaryPath="$(rbenv root)""/versions/""$(< .ruby-version)""/bin/ruby"
+          if [ -e "$rubyVersionBinaryPath" ]; then
+              :
+          else
+              brew update && brew upgrade ruby-build || true
+              rbenv install "$(< .ruby-version)"
+          fi
       - name: Install Package for mint
         run: brew install mint
+
